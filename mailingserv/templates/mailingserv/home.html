@@ -209,25 +209,29 @@
       <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
     </symbol>
   </svg>
-  <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark"> <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Company name</a>
-    <ul class="navbar-nav flex-row d-md-none">
-      <li class="nav-item text-nowrap">
-        <button class="nav-link px-3 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch" aria-controls="navbarSearch" aria-expanded="false" aria-label="Toggle search">
-          <svg class="bi" aria-hidden="true">
-            <use xlink:href="#search"></use>
+  <header class="p-3 text-bg-dark">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+            <use xlink:href="#bootstrap"></use>
           </svg>
-        </button>
-      </li>
-      <li class="nav-item text-nowrap">
-        <button class="nav-link px-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-          <svg class="bi" aria-hidden="true">
-            <use xlink:href="#list"></use>
-          </svg>
-        </button>
-      </li>
-    </ul>
-    <div id="navbarSearch" class="navbar-search w-100 collapse">
-      <input class="form-control w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search"> </div>
+        </a>
+        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="#" class="nav-link px-2 text-secondary">Рассылки</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Сообщения</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Получатели</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Отчеты по рассылке</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Попытки рассылки</a></li>
+        </ul>
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+          <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search"> </form>
+        <div class="text-end">
+          <button type="button" class="btn btn-outline-light me-2">Регистрация</button>
+          <button type="button" class="btn btn-warning">Войти</button>
+        </div>
+      </div>
+    </div>
   </header>
   <div class="container-fluid">
     <div class="row">
@@ -244,7 +248,7 @@
                   <svg class="bi" aria-hidden="true">
                     <use xlink:href="#house-fill"></use>
                   </svg>
-                  Dashboard
+                  Рассылки
                 </a>
               </li>
               <li class="nav-item">
@@ -252,15 +256,7 @@
                   <svg class="bi" aria-hidden="true">
                     <use xlink:href="#file-earmark"></use>
                   </svg>
-                  Orders
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link d-flex align-items-center gap-2" href="#">
-                  <svg class="bi" aria-hidden="true">
-                    <use xlink:href="#cart"></use>
-                  </svg>
-                  Products
+                  Сообщения
                 </a>
               </li>
               <li class="nav-item">
@@ -268,7 +264,7 @@
                   <svg class="bi" aria-hidden="true">
                     <use xlink:href="#people"></use>
                   </svg>
-                  Customers
+                  Получатели
                 </a>
               </li>
               <li class="nav-item">
@@ -276,7 +272,7 @@
                   <svg class="bi" aria-hidden="true">
                     <use xlink:href="#graph-up"></use>
                   </svg>
-                  Reports
+                  Отчеты по рассылке
                 </a>
               </li>
               <li class="nav-item">
@@ -284,7 +280,7 @@
                   <svg class="bi" aria-hidden="true">
                     <use xlink:href="#puzzle"></use>
                   </svg>
-                  Integrations
+                  Попытки рассылки
                 </a>
               </li>
             </ul>
@@ -361,24 +357,24 @@
             </button>
           </div>
         </div>
-        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
         <h2>Section title</h2>
         <div class="table-responsive small">
           <table class="table table-striped table-sm">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Header</th>
-                <th scope="col">Header</th>
-                <th scope="col">Header</th>
-                <th scope="col">Header</th>
+                <th scope="col">Номер рассылки</th>
+                <th scope="col">Тема</th>
+                <th scope="col">Сообщение</th>
+                <th scope="col">Кол-во получателей</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Операция</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>1,001</td>
                 <td>random</td>
-                <td>data</td>
+                <td>dataавввввввввввввввввввввввввввввввввввввввввввввввв</td>
                 <td>placeholder</td>
                 <td>text</td>
               </tr>
