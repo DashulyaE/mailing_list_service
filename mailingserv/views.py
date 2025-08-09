@@ -1,9 +1,17 @@
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView, TemplateView
 
 from mailingserv.models import Mailing
 
 
-def mailing_list(request):
-    mailings = Mailing.objects.all()
-    context = {"mailings":mailings}
-    return render(request, "mailingserv/mailings_list.html", context)
+class MailingHomeView(TemplateView):
+    template_name = "mailingserv/home.html"
+    context_object_name = "home"
+
+
+class MailinglistView(ListView):
+    model = Mailing
+
+
+class MailingDetailView(DetailView):
+    model = Mailing

@@ -1,9 +1,11 @@
 from django.urls import path, include
 from mailingserv.apps import MailingservConfig
-from mailingserv.views import mailing_list
+from mailingserv.views import MailinglistView, MailingDetailView, MailingHomeView
 
 app_name = MailingservConfig.name
 
 urlpatterns = [
-    path("", mailing_list, name="base"),
+    path("", MailingHomeView.as_view(), name="home"),
+    path("mailingserv/", MailinglistView.as_view(), name="mailing_list"),
+    path("mailingserv/<int:pk>", MailingDetailView.as_view(), name="mailing_detail"),
 ]
