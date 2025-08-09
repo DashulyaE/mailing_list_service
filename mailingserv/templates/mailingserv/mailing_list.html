@@ -1,5 +1,16 @@
 {% extends 'mailingserv/base.html' %}
+{% block head %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Рассылки</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group me-2">
+      <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_create' %}" role="button">Создать рассылку</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
 {% block content %}
+
 <h2>Список рассылок</h2>
 <div class="table-responsive small">
   <table class="table table-striped table-sm">
@@ -21,7 +32,13 @@
         <td>{{ mailing.message.body|truncatechars:50 }}</td>
         <td>{{ mailing.clients.count }}</td>
         <td>{{ mailing.get_status_display }}</td>
-        <td><a class="btn btn-lg btn-block btn-outline-primary" href="{% url 'mailingserv:mailing_detail' mailing.pk %}" role="button">Подробно</a></td>
+        <td>
+          <div class="btn-group me-2">
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_detail' mailing.pk %}" role="button">Подробно</a>
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_update' mailing.pk %}" role="button">Изменить</a>
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_delete' mailing.pk %}" role="button">Удалить</a>
+          </div>
+        </td>
       </tr>
     {% endfor %}
     </tbody>
