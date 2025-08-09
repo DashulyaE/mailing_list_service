@@ -1,4 +1,9 @@
 from django.shortcuts import render
 
-def home(request):
-    return render(request, 'mailingserv/home.html')
+from mailingserv.models import Mailing
+
+
+def mailing_list(request):
+    mailings = Mailing.objects.all()
+    context = {"mailings":mailings}
+    return render(request, "mailingserv/mailings_list.html", context)
