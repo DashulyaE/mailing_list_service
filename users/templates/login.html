@@ -1,0 +1,14 @@
+{% extends 'mailingserv/base.html' %}
+{% block content %}
+<div class="card mb-4 box-shadow">
+    <div class="card-body">
+        <form method="POST" action="" class="form-floating" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-lg btn-block btn-outline-primary">
+              Войти
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

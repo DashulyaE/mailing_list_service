@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from django.conf.global_settings import AUTH_USER_MODEL, LOGOUT_REDIRECT_URL, LOGIN_URL
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
@@ -22,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "mailingserv",
+    "users"
 ]
 
 MIDDLEWARE = [
@@ -106,3 +108,8 @@ SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
