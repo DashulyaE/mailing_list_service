@@ -1,0 +1,42 @@
+{% extends 'mailingserv/base.html' %}
+{% block head %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Получатели</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group me-2">
+      <a class="btn btn-sm btn-outline-secondary" href="#" role="button">Создать получателя</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block content %}
+
+<h2>Список получателей</h2>
+<div class="table-responsive small">
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th scope="col">email</th>
+        <th scope="col">ФИО</th>
+        <th scope="col">Комментарий</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for client in object_list %}
+        <tr>
+          <td>{{ client.email }}</td>
+          <td>{{ client.full_name }}</td>
+          <td>{{ client.comment|truncatechars:50 }}</td>
+          <td>
+            <div class="btn-group me-2">
+              <a class="btn btn-sm btn-outline-secondary" href="#" role="button">Подробно</a>
+              <a class="btn btn-sm btn-outline-secondary" href="#" role="button">Изменить</a>
+              <a class="btn btn-sm btn-outline-secondary" href="#" role="button">Удалить</a>
+            </div>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
