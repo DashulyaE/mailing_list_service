@@ -1,8 +1,9 @@
 from django.core.mail import send_mail
+from django.shortcuts import render
 from django.utils import timezone
 
 from config import settings
-from mailingserv.models import Attempt, Client
+from mailingserv.models import Attempt, Client, Mailing
 
 
 class MailingSender:
@@ -54,3 +55,19 @@ class MailingSender:
         self.mailing.save()
 
         return self.attempts
+
+
+def get_statistics():
+    total_mailings = Mailing.objects.count()
+    active_mailings = Mailing.objects.filter(is_active=True).count()
+    unique_recipients = Client.objects.filter(
+        newsletters__isnull=False
+    ).distinct().count()
+    total_attempts = Attempt.objects.count()
+
+    return {
+        'total_mailings': total_mailings,
+        'active_mailings': active_mailings,
+        'unique_recipients': unique_recipients,
+        'total_attempts': total_attempts,
+    }

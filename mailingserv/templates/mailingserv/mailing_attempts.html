@@ -12,6 +12,7 @@
     <thead>
       <tr>
         <th scope="col">Дата рассылки</th>
+        <th scope="col">Номер рассылки</th>
         <th scope="col">Статус рассылки</th>
         <th scope="col">Ответ сервера</th>
       </tr>
@@ -20,6 +21,7 @@
       {% for attempt in attempts %}
         <tr>
           <td>{{ attempt.attempt_datetime }}</td>
+          <td>{{ attempt.mailing }}</td>
           <td>{{ attempt.get_status_display }}</td>
           <td>{{ attempt.server_response }}</td>
         </tr>

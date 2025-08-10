@@ -14,12 +14,17 @@ from django.views.generic import (
 from config import settings
 from mailingserv.forms import MailingForm, ClientForm, MessageForm
 from mailingserv.models import Mailing, Client, Message, Attempt
-from mailingserv.services import MailingSender
+from mailingserv.services import MailingSender, get_statistics
 
 
 class MailingHomeView(TemplateView):
     template_name = "mailingserv/home.html"
     context_object_name = "home"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update(get_statistics())
+        return context
 
 
 class MailinglistView(ListView):

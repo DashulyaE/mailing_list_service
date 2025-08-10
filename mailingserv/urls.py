@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from mailingserv import views
+from mailingserv import views, services
 from mailingserv.apps import MailingservConfig
 from mailingserv.views import (
     MailinglistView,
