@@ -4,7 +4,7 @@
   <h1 class="h2">Получатели</h1>
   <div class="btn-toolbar mb-2 mb-md-0">
     <div class="btn-group me-2">
-      <a class="btn btn-sm btn-outline-secondary" href="#" role="button">Создать получателя</a>
+      <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_create' %}" role="button">Создать получателя</a>
     </div>
   </div>
 </div>
@@ -29,9 +29,9 @@
           <td>{{ client.comment|truncatechars:50 }}</td>
           <td>
             <div class="btn-group me-2">
-              <a class="btn btn-sm btn-outline-secondary" href="#" role="button">Подробно</a>
-              <a class="btn btn-sm btn-outline-secondary" href="#" role="button">Изменить</a>
-              <a class="btn btn-sm btn-outline-secondary" href="#" role="button">Удалить</a>
+              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_detail' client.pk %}" role="button">Подробно</a>
+              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_update' client.pk %}" role="button">Изменить</a>
+              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_delete' client.pk %}" role="button">Удалить</a>
             </div>
           </td>
         </tr>
