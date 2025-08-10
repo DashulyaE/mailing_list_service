@@ -1,4 +1,6 @@
 from django.urls import path, include
+
+from mailingserv import views
 from mailingserv.apps import MailingservConfig
 from mailingserv.views import (
     MailinglistView,
@@ -16,7 +18,8 @@ from mailingserv.views import (
     MessageDetailView,
     MessageCreateView,
     MessageUpdateView,
-    MessageDeleteView, send_newmailing,
+    MessageDeleteView,
+    send_newmailing,
 )
 
 app_name = MailingservConfig.name
@@ -46,5 +49,6 @@ urlpatterns = [
     path(
         "message/<int:pk>/delete/", MessageDeleteView.as_view(), name="message_delete"
     ),
-    path('mailing/<int:pk>/send/', send_newmailing, name='mailing_send'),
+    path("mailing/<int:pk>/send/", send_newmailing, name="mailing_send"),
+    path("mailing/all_attempts/", views.all_attempts_list, name="all_attempts"),
 ]

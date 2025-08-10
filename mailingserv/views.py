@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.core.mail import send_mail
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -13,8 +13,8 @@ from django.views.generic import (
 
 from config import settings
 from mailingserv.forms import MailingForm, ClientForm, MessageForm
-from mailingserv.models import Mailing, Client, Message
-from mailingserv.services import check_and_update_mailings
+from mailingserv.models import Mailing, Client, Message, Attempt
+from mailingserv.services import MailingSender
 
 
 class MailingHomeView(TemplateView):
@@ -25,17 +25,10 @@ class MailingHomeView(TemplateView):
 class MailinglistView(ListView):
     model = Mailing
 
-    def get_queryset(self):
-        check_and_update_mailings()
-        return super().get_queryset()
-
 
 class MailingDetailView(DetailView):
     model = Mailing
 
-    def get(self, request, *args, **kwargs):
-        check_and_update_mailings()
-        return super().get(request, *args, **kwargs)
 
 class MailingCreateView(CreateView):
     model = Mailing
@@ -105,18 +98,21 @@ class MessageDeleteView(DeleteView):
 
 
 def send_newmailing(request, pk):
-    """Отправка рассылки вручную с сайта"""
+    """Контроллер для отображения попытки рассылки"""
     mailing = get_object_or_404(Mailing, pk=pk)
-    recipients = mailing.clients.all()
-    for client in recipients:
-        send_mail(
-            subject=mailing.message.subject,
-            message=mailing.message.body,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[client.email],
-        )
-    # Обновляем статус
-    mailing.status = 'started'
-    mailing.save()
-    messages.success(request, "Рассылка отправлена вручную.")
-    return redirect('mailingserv:mailing_detail', pk=pk)
+    sender = MailingSender(mailing)
+    attempts = sender.send()
+    return render(
+        request,
+        "mailingserv/mailing_attempts.html",
+        {
+            "mailing": mailing,
+            "attempts": attempts,
+        },
+    )
+
+
+def all_attempts_list(request):
+    """Контроллер для записи всех попыток рассылок в шаблон"""
+    attempts = Attempt.objects.select_related("mailing").all()
+    return render(request, "mailingserv/mailing_attempts.html", {"attempts": attempts})
