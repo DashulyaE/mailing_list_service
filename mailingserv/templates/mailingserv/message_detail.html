@@ -12,6 +12,13 @@
         <td><strong>Текст письма</strong></td>
         <td>{{ object.body }}</td>
       </tr>
+      <tr>
+        <td>
+          <div class="btn-group me-2">
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:message_list' %}" role="button">Назад</a>
+          </div>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
