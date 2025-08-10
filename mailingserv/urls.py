@@ -1,8 +1,23 @@
 from django.urls import path, include
 from mailingserv.apps import MailingservConfig
-from mailingserv.views import MailinglistView, MailingDetailView, MailingHomeView, MailingCreateView, MailingUpdateView, \
-    MailingDeleteView, ClientlistView, ClientDetailView, ClientCreateView, ClientUpdateView, ClientDeleteView, \
-    MessagelistView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView
+from mailingserv.views import (
+    MailinglistView,
+    MailingDetailView,
+    MailingHomeView,
+    MailingCreateView,
+    MailingUpdateView,
+    MailingDeleteView,
+    ClientlistView,
+    ClientDetailView,
+    ClientCreateView,
+    ClientUpdateView,
+    ClientDeleteView,
+    MessagelistView,
+    MessageDetailView,
+    MessageCreateView,
+    MessageUpdateView,
+    MessageDeleteView, send_newmailing,
+)
 
 app_name = MailingservConfig.name
 
@@ -11,8 +26,12 @@ urlpatterns = [
     path("mailing/", MailinglistView.as_view(), name="mailing_list"),
     path("mailing/<int:pk>", MailingDetailView.as_view(), name="mailing_detail"),
     path("mailing/create", MailingCreateView.as_view(), name="mailing_create"),
-    path("mailing/<int:pk>/update/", MailingUpdateView.as_view(), name="mailing_update"),
-    path("mailing/<int:pk>/delete/", MailingDeleteView.as_view(), name="mailing_delete"),
+    path(
+        "mailing/<int:pk>/update/", MailingUpdateView.as_view(), name="mailing_update"
+    ),
+    path(
+        "mailing/<int:pk>/delete/", MailingDeleteView.as_view(), name="mailing_delete"
+    ),
     path("client/", ClientlistView.as_view(), name="client_list"),
     path("client/<int:pk>", ClientDetailView.as_view(), name="client_detail"),
     path("client/create", ClientCreateView.as_view(), name="client_create"),
@@ -21,6 +40,11 @@ urlpatterns = [
     path("message/", MessagelistView.as_view(), name="message_list"),
     path("message/<int:pk>", MessageDetailView.as_view(), name="message_detail"),
     path("message/create", MessageCreateView.as_view(), name="message_create"),
-    path("message/<int:pk>/update/", MessageUpdateView.as_view(), name="message_update"),
-    path("message/<int:pk>/delete/", MessageDeleteView.as_view(), name="message_delete"),
+    path(
+        "message/<int:pk>/update/", MessageUpdateView.as_view(), name="message_update"
+    ),
+    path(
+        "message/<int:pk>/delete/", MessageDeleteView.as_view(), name="message_delete"
+    ),
+    path('mailing/<int:pk>/send/', send_newmailing, name='mailing_send'),
 ]
