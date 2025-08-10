@@ -20,7 +20,7 @@ class MailingForm(StyleFormMixin, ModelForm):
 
     class Meta:
         model = Mailing
-        fields = "__all__"
+        exclude = ['owner']
 
     def clean(self):
         cleaned_data = super().clean()
@@ -38,7 +38,7 @@ class ClientForm(StyleFormMixin, ModelForm):
 
     class Meta:
         model = Client
-        fields = "__all__"
+        exclude = ['owner']
 
 
 class MessageForm(StyleFormMixin, ModelForm):
@@ -46,4 +46,4 @@ class MessageForm(StyleFormMixin, ModelForm):
 
     class Meta:
         model = Message
-        fields = "__all__"
+        exclude = ['owner']

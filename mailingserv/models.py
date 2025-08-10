@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 class Client(models.Model):
     """Модель 'Получатель рассылки'"""
@@ -7,6 +9,7 @@ class Client(models.Model):
     email = models.EmailField(verbose_name="Email", unique=True)
     full_name = models.CharField(max_length=255, verbose_name="ФИО")
     comment = models.TextField(verbose_name="Комментарий", blank=True, null=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", null=True)
 
     class Meta:
         verbose_name = "Получатель"
@@ -23,6 +26,7 @@ class Message(models.Model):
     body = models.TextField(
         verbose_name="Тело письма", help_text="Введите текст сообщения"
     )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", null=True)
 
     class Meta:
         verbose_name = "Сообщение"
@@ -53,6 +57,7 @@ class Mailing(models.Model):
         Client, related_name="newsletters", verbose_name="Получатели"
     )
     is_active = models.BooleanField(default=True, verbose_name="Активна")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", null=True)
 
     class Meta:
         verbose_name = "Рассылка"
