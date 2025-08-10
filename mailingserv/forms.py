@@ -16,6 +16,14 @@ class MailingForm(StyleFormMixin, ModelForm):
         model = Mailing
         fields = "__all__"
 
+    def clean(self):
+        cleaned_data = super().clean()
+        start = cleaned_data.get('start_datetime')
+        end = cleaned_data.get('end_datetime')
+        if start and end and start >= end:
+            self.add_error('start_datetime', "Дата начала должна быть раньше даты окончания.")
+        return cleaned_data
+
 
 class ClientForm(StyleFormMixin, ModelForm):
     class Meta:
