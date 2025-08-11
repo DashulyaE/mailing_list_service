@@ -59,7 +59,7 @@ class MailingSender:
 
 def get_statistics():
     total_mailings = Mailing.objects.count()
-    active_mailings = Mailing.objects.filter(is_active=True).count()
+    active_mailings = Mailing.objects.filter(status='started').count()
     unique_recipients = Client.objects.filter(
         newsletters__isnull=False
     ).distinct().count()

@@ -1,0 +1,34 @@
+{% extends 'mailingserv/base.html' %}
+{% block content %}
+<h2>Профиль пользователя</h2>
+<div class="table-responsive small">
+  <table class="table table-striped table-sm">
+    <tbody>
+      <tr>
+        <td><strong>E-mail</strong></td>
+        <td>{{ user_profile.email }}</td>
+      </tr>
+      <tr>
+        <td><strong>Телефон</strong></td>
+        <td>{{ user_profile.phone }}</td>
+      </tr>
+      <tr>
+        <td><strong>Страна</strong></td>
+        <td>{{ user_profile.country }}</td>
+      </tr>
+      {% if user_profile.avatar %}
+          <tr>
+            <td><strong>Аватар</strong></td>
+            <td><img src="{{ user_profile.avatar.url }}" alt="Аватар"></td>
+          </tr>
+      {% endif %}
+      <tr>
+        <td><div class="btn-group me-2">
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:home' %}" role="button">Назад</a>
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'users:user_profile_edit' %}" role="button">Редактировать</a>
+        </div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}
