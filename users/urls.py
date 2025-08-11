@@ -3,7 +3,7 @@ from django.urls import path
 
 from users.apps import UsersConfig
 from users.views import RegisterView, UserProfileView, UserProfileUpdateView, CustomPasswordResetView, \
-    CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetCompleteView
+    CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetCompleteView, UserListView
 
 from django.contrib.auth import views as auth_views
 
@@ -32,4 +32,5 @@ urlpatterns = [
         CustomPasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path('users/', UserListView.as_view(), name='user_list'),
 ]
