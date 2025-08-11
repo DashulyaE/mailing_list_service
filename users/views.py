@@ -1,7 +1,8 @@
+from django.contrib import messages
 from django.contrib.auth import login
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
-    PasswordResetCompleteView
+    PasswordResetCompleteView, LoginView
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, ListView
 
@@ -67,3 +68,25 @@ class UserListView(LoginRequiredMixin, ListView):
     template_name = "messaging/user_list.html"
     context_object_name = "users"
 
+
+class CustomLoginView(LoginView):
+    def form_valid(self, form):
+        user = form.get_user()
+        if user.is_blocked:
+            messages.error(self.request, "Ваш аккаунт заблокирован.")
+            return self.form_invalid(form)
+        return super().form_valid(form)
+
+
+class UserBlockToggleView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = User
+    fields = ['is_blocked']
+    template_name = 'users/block_toggle.html'
+    success_url = reverse_lazy('users:user_list')
+
+    def test_func(self):
+        return self.request.user.is_superuser  # или другая проверка
+
+    def get_object(self, queryset=None):
+        user_id = self.kwargs['pk']
+        return User.objects.get(pk=user_id)

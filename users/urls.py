@@ -3,14 +3,15 @@ from django.urls import path
 
 from users.apps import UsersConfig
 from users.views import RegisterView, UserProfileView, UserProfileUpdateView, CustomPasswordResetView, \
-    CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetCompleteView, UserListView
+    CustomPasswordResetDoneView, CustomPasswordResetConfirmView, CustomPasswordResetCompleteView, UserListView, \
+    CustomLoginView, UserBlockToggleView
 
 from django.contrib.auth import views as auth_views
 
 app_name = UsersConfig.name
 
 urlpatterns = [
-    path('login/', LoginView.as_view(template_name='login.html'), name='login'),
+    path('login/', CustomLoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', UserProfileView.as_view(), name='user_profile'),
@@ -33,4 +34,5 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path('users/', UserListView.as_view(), name='user_list'),
+    path('users/<int:pk>/block/', UserBlockToggleView.as_view(), name='user_block_toggle'),
 ]

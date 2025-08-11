@@ -1,0 +1,12 @@
+{% extends 'mailingserv/base.html' %}
+{% block content %}
+<h2>Блокировка пользователей</h2>
+<div class="card-body">
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Сохранить</button>
+    </form>
+<a href="{% url 'users:user_list' %}">Назад к списку пользователей</a>
+</div>
+{% endblock %}

@@ -10,6 +10,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=35, verbose_name="Телефон", blank=True, help_text="Введите номер телефона")
     country = models.CharField(max_length=50, verbose_name="Страна", blank=True, help_text="Укажите страну")
     avatar = models.ImageField(upload_to='users/avatars/', verbose_name="Аватар", blank=True, null=True, help_text="Загрузите свой аватар")
+    is_blocked = models.BooleanField(default=False, verbose_name="Заблокирован")
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
