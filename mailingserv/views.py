@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -10,9 +11,11 @@ from django.views.generic import (
     DeleteView,
 )
 
+from mailingserv import services
 from mailingserv.forms import MailingForm, ClientForm, MessageForm
 from mailingserv.models import Mailing, Client, Message, Attempt
 from mailingserv.services import MailingSender, get_statistics
+from users.models import User
 
 
 class MailingHomeView(TemplateView):
@@ -137,3 +140,20 @@ def all_attempts_list(request):
     """Контроллер для записи всех попыток рассылок в шаблон"""
     attempts = Attempt.objects.select_related("mailing").all()
     return render(request, "mailingserv/mailing_attempts.html", {"attempts": attempts})
+
+
+@login_required
+def user_report(request):
+    users = User.objects.all()
+    user_stats = []
+
+    for user in users:
+        stats = {
+            'user': user,
+            'successful_attempts': services.get_successful_attempts_count(user),
+            'failed_attempts': services.get_failed_attempts_count(user),
+            'messages_sent': services.get_sent_messages_count(user),
+        }
+        user_stats.append(stats)
+
+    return render(request, 'mailingserv/user_report.html', {'user_stats': user_stats})

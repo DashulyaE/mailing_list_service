@@ -3,11 +3,11 @@ from django.shortcuts import render
 from django.utils import timezone
 
 from config import settings
-from mailingserv.models import Attempt, Client, Mailing
+from mailingserv.models import Attempt, Client, Mailing, Message
 
 
 class MailingSender:
-    """Класс для отправки рассылки и охранения попытки рассылки"""
+    """Класс для отправки рассылки и cохранения попытки рассылки"""
 
     def __init__(self, mailing):
         self.mailing = mailing
@@ -71,3 +71,19 @@ def get_statistics():
         'unique_recipients': unique_recipients,
         'total_attempts': total_attempts,
     }
+
+
+def get_successful_attempts_count(user):
+    return Attempt.objects.filter(
+        mailing__owner=user,
+        status=Attempt.SUCCESS
+    ).count()
+
+def get_failed_attempts_count(user):
+    return Attempt.objects.filter(
+        mailing__owner=user,
+        status=Attempt.FAILURE
+    ).count()
+
+def get_sent_messages_count(user):
+    return Message.objects.filter(mailing__owner=user).count()

@@ -11,7 +11,7 @@
         <li><a href="{% url 'mailingserv:mailing_list' %}" class="nav-link px-2 text-white">Рассылки</a></li>
         <li><a href="{% url 'mailingserv:message_list' %}" class="nav-link px-2 text-white">Сообщения</a></li>
         <li><a href="{% url 'mailingserv:client_list' %}" class="nav-link px-2 text-white">Получатели</a></li>
-        <li><a href="#" class="nav-link px-2 text-white">Отчеты по рассылке</a></li>
+        <li><a href="{% url 'mailingserv:user_report' %}" class="nav-link px-2 text-white">Отчеты по рассылке</a></li>
         <li><a href="{% url 'mailingserv:all_attempts' %}" class="nav-link px-2 text-white">Попытки рассылки</a></li>
       {% endif %}
     </ul>
