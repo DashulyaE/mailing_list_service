@@ -28,21 +28,23 @@
     </thead>
     <tbody>
       {% for mailing in object_list %}
-        <tr>
-          <td>{{ mailing.id }}</td>
-          <td>{{ mailing.message.subject }}</td>
-          <td>{{ mailing.message.body|truncatechars:50 }}</td>
-          <td>{{ mailing.clients.count }}</td>
-          <td>{{ mailing.get_status_display }}</td>
-          <td>
-            <div class="btn-group me-2">
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_detail' mailing.pk %}" role="button">Подробно</a>
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_update' mailing.pk %}" role="button">Изменить</a>
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_delete' mailing.pk %}" role="button">Удалить</a>
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_send' mailing.id %}" role="button">Отправить</a>
-            </div>
-          </td>
-        </tr>
+        {% if user == mailing.owner %}
+          <tr>
+            <td>{{ mailing.id }}</td>
+            <td>{{ mailing.message.subject }}</td>
+            <td>{{ mailing.message.body|truncatechars:50 }}</td>
+            <td>{{ mailing.clients.count }}</td>
+            <td>{{ mailing.get_status_display }}</td>
+            <td>
+              <div class="btn-group me-2">
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_detail' mailing.pk %}" role="button">Подробно</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_update' mailing.pk %}" role="button">Изменить</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_delete' mailing.pk %}" role="button">Удалить</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_send' mailing.id %}" role="button">Отправить</a>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
       {% endfor %}
     </tbody>
   </table>

@@ -23,18 +23,18 @@
     </thead>
     <tbody>
       {% for message in object_list %}
-        <tr>
-          <td>{{ message.id }}</td>
-          <td>{{ message.subject }}</td>
-          <td>{{ message.body|truncatechars:50 }}</td>
-          <td>
-            <div class="btn-group me-2">
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:message_detail' message.pk %}" role="button">Подробно</a>
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:message_update' message.pk %}" role="button">Изменить</a>
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:message_delete' message.pk %}" role="button">Удалить</a>
-            </div>
-          </td>
-        </tr>
+          <tr>
+            <td>{{ message.id }}</td>
+            <td>{{ message.subject }}</td>
+            <td>{{ message.body|truncatechars:50 }}</td>
+            <td>
+              <div class="btn-group me-2">
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:message_detail' message.pk %}" role="button">Подробно</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:message_update' message.pk %}" role="button">Изменить</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:message_delete' message.pk %}" role="button">Удалить</a>
+              </div>
+            </td>
+          </tr>
       {% endfor %}
     </tbody>
   </table>

@@ -1,3 +1,4 @@
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
@@ -41,10 +42,10 @@ class MailingCreateView(CreateView, LoginRequiredMixin):
     form_class = MailingForm
     success_url = reverse_lazy("mailingserv:mailing_list")
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user  # Передача текущего пользователя
-        return kwargs
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['user'] = self.request.user  # Передача текущего пользователя
+    #     return kwargs
 
     def form_valid(self, form):
         mailing = form.save(commit=False)
@@ -58,10 +59,10 @@ class MailingUpdateView(UpdateView, LoginRequiredMixin):
     form_class = MailingForm
     success_url = reverse_lazy("mailingserv:mailing_list")
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
 
 
 class MailingDeleteView(DeleteView, LoginRequiredMixin):

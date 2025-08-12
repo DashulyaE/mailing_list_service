@@ -14,9 +14,8 @@
         <li><a href="{% url 'mailingserv:client_list' %}" class="nav-link px-2 text-white">Получатели</a></li>
         <li><a href="{% url 'mailingserv:user_report' %}" class="nav-link px-2 text-white">Отчеты по рассылке</a></li>
         <li><a href="{% url 'mailingserv:all_attempts' %}" class="nav-link px-2 text-white">Попытки рассылки</a></li>
-        {% if user|has_perm:"users.can_view_user" %}
-          <li><a href="{% url 'users:user_list' %}" class="nav-link px-2 text-white">Список пользователей</a></li>
-        {% endif %}
+        <li><a href="{% url 'users:user_list' %}" class="nav-link px-2 text-white">Список пользователей</a></li>
+
       {% endif %}
     </ul>
     <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">

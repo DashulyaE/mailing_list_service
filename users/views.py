@@ -94,7 +94,7 @@ class UserBlockToggleView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     success_url = reverse_lazy('users:user_list')
 
     def test_func(self):
-        return self.request.user.has_perm("users.can_block_user")
+        return self.request.user.is_authenticated  # или другая проверка
 
     def get_object(self, queryset=None):
         user_id = self.kwargs['pk']

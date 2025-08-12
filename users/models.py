@@ -20,8 +20,7 @@ class User(AbstractUser):
         verbose_name_plural = "Пользователи"
         permissions = [
             ("can_block_user", "Может блокировать пользователей"),
-            ("can_view_user", "Может просматривать все объекты"),
-            ("can_finish_mailing", "Может отключить рассылку"),
+            ("can_view_user", "Может просматривать список пользователей"),
         ]
 
 

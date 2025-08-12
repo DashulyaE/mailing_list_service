@@ -23,18 +23,20 @@
     </thead>
     <tbody>
       {% for client in object_list %}
-        <tr>
-          <td>{{ client.email }}</td>
-          <td>{{ client.full_name }}</td>
-          <td>{{ client.comment|truncatechars:50 }}</td>
-          <td>
-            <div class="btn-group me-2">
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_detail' client.pk %}" role="button">Подробно</a>
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_update' client.pk %}" role="button">Изменить</a>
-              <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_delete' client.pk %}" role="button">Удалить</a>
-            </div>
-          </td>
-        </tr>
+        {% if user == client.owner %}
+          <tr>
+            <td>{{ client.email }}</td>
+            <td>{{ client.full_name }}</td>
+            <td>{{ client.comment|truncatechars:50 }}</td>
+            <td>
+              <div class="btn-group me-2">
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_detail' client.pk %}" role="button">Подробно</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_update' client.pk %}" role="button">Изменить</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_delete' client.pk %}" role="button">Удалить</a>
+              </div>
+            </td>
+          </tr>
+       {% endif %}
       {% endfor %}
     </tbody>
   </table>
