@@ -10,6 +10,7 @@ class Client(models.Model):
     full_name = models.CharField(max_length=255, verbose_name="ФИО")
     comment = models.TextField(verbose_name="Комментарий", blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", null=True)
+    is_subscribed = models.BooleanField(default=True, verbose_name="Подписан на рассылку")
 
     class Meta:
         verbose_name = "Получатель"

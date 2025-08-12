@@ -18,6 +18,12 @@ class User(AbstractUser):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+        permissions = [
+            ("can_block_user", "Может блокировать пользователей"),
+            ("can_view_user", "Может просматривать все объекты"),
+            ("can_finish_mailing", "Может отключить рассылку"),
+        ]
+
 
     def __str__(self):
         return self.email

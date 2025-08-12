@@ -15,9 +15,9 @@ class MailingSender:
 
     def send(self):
         success_count = 0
-        total_recipients = self.mailing.clients.count()
+        total_recipients = self.mailing.clients.filter(is_subscribed=True).count()
 
-        recipients = self.mailing.clients.all()
+        recipients = self.mailing.clients.filter(is_subscribed=True)
         for client in recipients:
             try:
                 if not Client.objects.filter(email=client.email).exists():
