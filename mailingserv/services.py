@@ -15,6 +15,8 @@ class MailingSender:
         self.attempts = []
 
     def send(self):
+        self.mailing.status = "created"
+        self.mailing.save()
         success_count = 0
         total_recipients = self.mailing.clients.filter(is_subscribed=True).count()
 
@@ -52,7 +54,7 @@ class MailingSender:
             self.mailing.overall_status = "success"
         else:
             self.mailing.overall_status = "failure"
-        self.mailing.status = "finished"
+        self.mailing.status = "started"
         self.mailing.save()
 
         return self.attempts
