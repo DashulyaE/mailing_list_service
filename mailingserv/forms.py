@@ -39,6 +39,12 @@ class MailingForm(StyleFormMixin, ModelForm):
         return cleaned_data
 
 
+class MailingModeratorForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Mailing
+        fields = ['is_subscribed']
+
+
 class ClientForm(StyleFormMixin, ModelForm):
     """Класс для создания формы для получателей"""
 

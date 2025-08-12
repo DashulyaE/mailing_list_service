@@ -29,13 +29,15 @@
                 <td>{{ user.phone }}</td>
                 <td>{{ user.country }}</td>
                 <td>
-                    <a href="{% url 'users:user_block_toggle' user.id %}">
-                        {% if user.is_blocked %}
-                            Разблокировать
-                        {% else %}
-                            Заблокировать
-                        {% endif %}
-                    </a>
+                    {% if is_manager %}
+                        <a href="{% url 'users:user_block_toggle' user.id %}">
+                            {% if user.is_blocked %}
+                                Разблокировать
+                            {% else %}
+                                Заблокировать
+                            {% endif %}
+                        </a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

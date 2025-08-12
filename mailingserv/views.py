@@ -1,5 +1,5 @@
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -13,7 +13,7 @@ from django.views.generic import (
 )
 
 from mailingserv import services
-from mailingserv.forms import MailingForm, ClientForm, MessageForm
+from mailingserv.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm
 from mailingserv.models import Mailing, Client, Message, Attempt
 from mailingserv.services import MailingSender, get_statistics
 from users.models import User
@@ -25,6 +25,7 @@ class MailingHomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
         context.update(get_statistics())
         return context
 
@@ -65,10 +66,11 @@ class MailingUpdateView(UpdateView, LoginRequiredMixin):
     form_class = MailingForm
     success_url = reverse_lazy("mailingserv:mailing_list")
 
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['user'] = self.request.user
-    #     return kwargs
+
+class MailingUpdateModeratorView(UpdateView, LoginRequiredMixin):
+    model = Mailing
+    form_class = MailingModeratorForm
+    success_url = reverse_lazy("mailingserv:mailing_list")
 
 
 class MailingDeleteView(DeleteView, LoginRequiredMixin):
@@ -188,3 +190,17 @@ def user_report(request):
 
     is_manager = request.user.groups.filter(name='Менеджеры').exists()
     return render(request, 'mailingserv/user_report.html', {'user_stats': user_stats, 'is_manager': is_manager,},)
+
+
+@login_required
+@permission_required('mailingserv.change_mailing')
+def edit_mailing_subscription(request, pk):
+    mailing = get_object_or_404(Mailing, pk=pk)
+    if request.method == 'POST':
+        form = MailingForm(request.POST, instance=mailing)
+        if form.is_valid():
+            form.save()
+            return redirect('mailingserv:mailing_list')
+    else:
+        form = MailingForm(instance=mailing)
+    return render(request, 'mailingserv/edit_mailing.html', {'form': form, 'mailing': mailing})

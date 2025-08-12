@@ -20,7 +20,7 @@ from mailingserv.views import (
     MessageCreateView,
     MessageUpdateView,
     MessageDeleteView,
-    send_newmailing, user_report
+    send_newmailing, user_report, MailingUpdateModeratorView
 )
 
 app_name = MailingservConfig.name
@@ -49,4 +49,7 @@ urlpatterns = [
     path("mailing/<int:pk>/send/", send_newmailing, name="mailing_send"),
     path("mailing/all_attempts/", views.all_attempts_list, name="all_attempts"),
     path('user-report/', user_report, name='user_report'),
+    path(
+        "mailing/<int:pk>/update_mod/", MailingUpdateModeratorView.as_view(), name="mailing_update_moderator"
+    ),
 ]
