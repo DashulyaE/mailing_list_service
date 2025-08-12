@@ -60,32 +60,26 @@ class MailingSender:
 
 def get_statistics():
     total_mailings = Mailing.objects.count()
-    active_mailings = Mailing.objects.filter(status='started').count()
-    unique_recipients = Client.objects.filter(
-        newsletters__isnull=False
-    ).distinct().count()
+    active_mailings = Mailing.objects.filter(status="started").count()
+    unique_recipients = (
+        Client.objects.filter(newsletters__isnull=False).distinct().count()
+    )
     total_attempts = Attempt.objects.count()
 
     return {
-        'total_mailings': total_mailings,
-        'active_mailings': active_mailings,
-        'unique_recipients': unique_recipients,
-        'total_attempts': total_attempts,
+        "total_mailings": total_mailings,
+        "active_mailings": active_mailings,
+        "unique_recipients": unique_recipients,
+        "total_attempts": total_attempts,
     }
 
 
 def get_successful_attempts_count(user):
-    return Attempt.objects.filter(
-        mailing__owner=user,
-        status=Attempt.SUCCESS
-    ).count()
+    return Attempt.objects.filter(mailing__owner=user, status=Attempt.SUCCESS).count()
 
 
 def get_failed_attempts_count(user):
-    return Attempt.objects.filter(
-        mailing__owner=user,
-        status=Attempt.FAILURE
-    ).count()
+    return Attempt.objects.filter(mailing__owner=user, status=Attempt.FAILURE).count()
 
 
 def get_sent_messages_count(user):

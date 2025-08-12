@@ -20,13 +20,13 @@ class MailingForm(StyleFormMixin, ModelForm):
 
     class Meta:
         model = Mailing
-        exclude = ['owner']
+        exclude = ["owner"]
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
+        user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
-        if user and not user.has_perm('mailingserv.can_finish_mailing'):
-            self.fields['is_subscribed'].disabled = True
+        if user and not user.has_perm("mailingserv.can_finish_mailing"):
+            self.fields["is_subscribed"].disabled = True
 
     def clean(self):
         cleaned_data = super().clean()
@@ -42,7 +42,7 @@ class MailingForm(StyleFormMixin, ModelForm):
 class MailingModeratorForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Mailing
-        fields = ['is_subscribed']
+        fields = ["is_subscribed"]
 
 
 class ClientForm(StyleFormMixin, ModelForm):
@@ -50,7 +50,7 @@ class ClientForm(StyleFormMixin, ModelForm):
 
     class Meta:
         model = Client
-        exclude = ['owner']
+        exclude = ["owner"]
 
 
 class MessageForm(StyleFormMixin, ModelForm):
@@ -58,4 +58,4 @@ class MessageForm(StyleFormMixin, ModelForm):
 
     class Meta:
         model = Message
-        exclude = ['owner']
+        exclude = ["owner"]

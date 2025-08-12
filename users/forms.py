@@ -16,4 +16,4 @@ class UserRegisterForm(StyleFormMixin, UserCreationForm):
 class UserUpdateForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'phone', 'country', 'avatar']
+        fields = ["email", "phone", "country", "avatar"]

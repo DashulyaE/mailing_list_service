@@ -1,4 +1,3 @@
-
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
@@ -15,7 +14,13 @@ from django.views.generic import (
 from mailingserv import services
 from mailingserv.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm
 from mailingserv.models import Mailing, Client, Message, Attempt
-from mailingserv.services import MailingSender, get_statistics, get_mailing_cache, get_сlient_cache, get_message_cache
+from mailingserv.services import (
+    MailingSender,
+    get_statistics,
+    get_mailing_cache,
+    get_сlient_cache,
+    get_message_cache,
+)
 from users.models import User
 
 
@@ -25,7 +30,9 @@ class MailingHomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
+        context["is_manager"] = self.request.user.groups.filter(
+            name="Менеджеры"
+        ).exists()
         context.update(get_statistics())
         return context
 
@@ -35,14 +42,15 @@ class MailinglistView(ListView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Проверяем, входит ли пользователь в группу "Менеджеры"
-        context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
+        context["is_manager"] = self.request.user.groups.filter(
+            name="Менеджеры"
+        ).exists()
         return context
 
     def get_queryset(self):
         mailing_qs = get_mailing_cache()
         user = self.request.user
-        if not user.groups.filter(name='Менеджеры').exists():
+        if not user.groups.filter(name="Менеджеры").exists():
             mailing_qs = mailing_qs.filter(owner=user)
         return mailing_qs
 
@@ -55,7 +63,6 @@ class MailingCreateView(CreateView, LoginRequiredMixin):
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy("mailingserv:mailing_list")
-
 
     def form_valid(self, form):
         mailing = form.save(commit=False)
@@ -86,13 +93,15 @@ class ClientlistView(ListView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
+        context["is_manager"] = self.request.user.groups.filter(
+            name="Менеджеры"
+        ).exists()
         return context
 
     def get_queryset(self):
         сlient_qs = get_сlient_cache()
         user = self.request.user
-        if not user.groups.filter(name='Менеджеры').exists():
+        if not user.groups.filter(name="Менеджеры").exists():
             сlient_qs = сlient_qs.filter(owner=user)
         return сlient_qs
 
@@ -129,14 +138,15 @@ class MessagelistView(ListView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Проверяем, входит ли пользователь в группу "Менеджеры"
-        context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
+        context["is_manager"] = self.request.user.groups.filter(
+            name="Менеджеры"
+        ).exists()
         return context
 
     def get_queryset(self):
         message_qs = get_message_cache()
         user = self.request.user
-        if not user.groups.filter(name='Менеджеры').exists():
+        if not user.groups.filter(name="Менеджеры").exists():
             message_qs = message_qs.filter(owner=user)
         return message_qs
 
@@ -186,37 +196,55 @@ def send_newmailing(request, pk):
 def all_attempts_list(request):
     """Контроллер для записи всех попыток рассылок в шаблон"""
     attempts = Attempt.objects.select_related("mailing").all()
-    is_manager = request.user.groups.filter(name='Менеджеры').exists()
-    return render(request, "mailingserv/mailing_attempts.html", {"attempts": attempts, "is_manager": is_manager,})
+    is_manager = request.user.groups.filter(name="Менеджеры").exists()
+    return render(
+        request,
+        "mailingserv/mailing_attempts.html",
+        {
+            "attempts": attempts,
+            "is_manager": is_manager,
+        },
+    )
 
 
 @login_required
 def user_report(request):
+    """Формирует данные по статистике и передает их в шаблон"""
     users = User.objects.all()
     user_stats = []
 
     for user in users:
         stats = {
-            'user': user,
-            'successful_attempts': services.get_successful_attempts_count(user),
-            'failed_attempts': services.get_failed_attempts_count(user),
-            'messages_sent': services.get_sent_messages_count(user),
+            "user": user,
+            "successful_attempts": services.get_successful_attempts_count(user),
+            "failed_attempts": services.get_failed_attempts_count(user),
+            "messages_sent": services.get_sent_messages_count(user),
         }
         user_stats.append(stats)
 
-    is_manager = request.user.groups.filter(name='Менеджеры').exists()
-    return render(request, 'mailingserv/user_report.html', {'user_stats': user_stats, 'is_manager': is_manager,},)
+    is_manager = request.user.groups.filter(name="Менеджеры").exists()
+    return render(
+        request,
+        "mailingserv/user_report.html",
+        {
+            "user_stats": user_stats,
+            "is_manager": is_manager,
+        },
+    )
 
 
 @login_required
-@permission_required('mailingserv.change_mailing')
+@permission_required("mailingserv.change_mailing")
 def edit_mailing_subscription(request, pk):
+    """переопределяет форму для редактирования рассылок в зависимости от прав пользователя"""
     mailing = get_object_or_404(Mailing, pk=pk)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = MailingForm(request.POST, instance=mailing)
         if form.is_valid():
             form.save()
-            return redirect('mailingserv:mailing_list')
+            return redirect("mailingserv:mailing_list")
     else:
         form = MailingForm(instance=mailing)
-    return render(request, 'mailingserv/edit_mailing.html', {'form': form, 'mailing': mailing})
+    return render(
+        request, "mailingserv/edit_mailing.html", {"form": form, "mailing": mailing}
+    )

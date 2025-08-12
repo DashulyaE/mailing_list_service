@@ -5,10 +5,10 @@ from mailingserv.models import Client, Message, Mailing, Attempt
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ("id", "full_name", "comment","is_subscribed")
+    list_display = ("id", "full_name", "comment", "is_subscribed")
     list_filter = ("email", "full_name")
     search_fields = ("email", "full_name")
-    list_editable = ('is_subscribed',)
+    list_editable = ("is_subscribed",)
 
 
 @admin.register(Message)

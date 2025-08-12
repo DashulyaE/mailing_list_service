@@ -4,11 +4,12 @@ from django.contrib.contenttypes.models import ContentType
 from users.models import User
 from mailingserv.models import Client, Mailing, Message
 
+
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # Создаем или получаем группу "Менеджеры"
-        group, created = Group.objects.get_or_create(name='Менеджеры')
+        group, created = Group.objects.get_or_create(name="Менеджеры")
         if created:
             self.stdout.write('Группа "Менеджеры" создана')
         else:
@@ -29,13 +30,13 @@ class Command(BaseCommand):
                 content_type_user,
             ],
             codename__in=[
-                'can_view_client',          # Просмотр клиентов
-                'can_view_all_mailing',         # Просмотр рассылок
-                'can_view_message',         # Просмотр сообщений
-                'can_view_user',            # Просмотр пользователей
-                'can_block_user',       # Блокировка пользователей
-                'can_finish_mailing',   # Отключение рассылок
-            ]
+                "can_view_client",  # Просмотр клиентов
+                "can_view_all_mailing",  # Просмотр рассылок
+                "can_view_message",  # Просмотр сообщений
+                "can_view_user",  # Просмотр пользователей
+                "can_block_user",  # Блокировка пользователей
+                "can_finish_mailing",  # Отключение рассылок
+            ],
         )
 
         group.permissions.set(permissions)

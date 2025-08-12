@@ -1,8 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, \
-    PasswordResetCompleteView, LoginView
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetDoneView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+    LoginView,
+)
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, ListView
 
@@ -15,7 +20,7 @@ class RegisterView(CreateView):
 
     model = User
     form_class = UserRegisterForm
-    success_url = reverse_lazy('users:login')
+    success_url = reverse_lazy("users:login")
 
     def form_valid(self, form):
         user = form.save()
@@ -27,8 +32,8 @@ class UserProfileView(LoginRequiredMixin, DetailView):
     """Контроллер просмотра профиля пользователя"""
 
     model = User
-    template_name = 'users/profile.html'
-    context_object_name = 'user_profile'
+    template_name = "users/profile.html"
+    context_object_name = "user_profile"
 
     def get_object(self):
         return self.request.user
@@ -39,8 +44,8 @@ class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     model = User
     form_class = UserUpdateForm
-    template_name = 'users/profile_edit.html'
-    success_url = reverse_lazy('users:user_profile')
+    template_name = "users/profile_edit.html"
+    success_url = reverse_lazy("users:user_profile")
 
     def get_object(self):
         return self.request.user
@@ -76,7 +81,9 @@ class UserListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Проверяем, входит ли пользователь в группу "Менеджеры"
-        context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
+        context["is_manager"] = self.request.user.groups.filter(
+            name="Менеджеры"
+        ).exists()
         return context
 
 
@@ -95,13 +102,13 @@ class UserBlockToggleView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """Класс блокировки пользователя"""
 
     model = User
-    fields = ['is_blocked']
-    template_name = 'users/block_toggle.html'
-    success_url = reverse_lazy('users:user_list')
+    fields = ["is_blocked"]
+    template_name = "users/block_toggle.html"
+    success_url = reverse_lazy("users:user_list")
 
     def test_func(self):
         return self.request.user.is_authenticated  # или другая проверка
 
     def get_object(self, queryset=None):
-        user_id = self.kwargs['pk']
+        user_id = self.kwargs["pk"]
         return User.objects.get(pk=user_id)
