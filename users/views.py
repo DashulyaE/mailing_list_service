@@ -11,6 +11,8 @@ from users.models import User
 
 
 class RegisterView(CreateView):
+    """Регистрация пользователя"""
+
     model = User
     form_class = UserRegisterForm
     success_url = reverse_lazy('users:login')
@@ -23,6 +25,7 @@ class RegisterView(CreateView):
 
 class UserProfileView(LoginRequiredMixin, DetailView):
     """Контроллер просмотра профиля пользователя"""
+
     model = User
     template_name = 'users/profile.html'
     context_object_name = 'user_profile'
@@ -64,12 +67,16 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
 
 
 class UserListView(LoginRequiredMixin, ListView):
+    """Список пользователей"""
+
     model = User
     template_name = "messaging/user_list.html"
     context_object_name = "users"
 
 
 class CustomLoginView(LoginView):
+    """Кастомный класс, который проверяет статус блокировки"""
+
     def form_valid(self, form):
         user = form.get_user()
         if user.is_blocked:
@@ -79,6 +86,8 @@ class CustomLoginView(LoginView):
 
 
 class UserBlockToggleView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """Класс блокировки пользователя"""
+
     model = User
     fields = ['is_blocked']
     template_name = 'users/block_toggle.html'
