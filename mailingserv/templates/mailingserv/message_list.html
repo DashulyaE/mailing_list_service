@@ -2,11 +2,13 @@
 {% block head %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Сообщения</h1>
-  <div class="btn-toolbar mb-2 mb-md-0">
-    <div class="btn-group me-2">
-      <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:message_create' %}" role="button">Создать сообщение</a>
+    {% if not is_manager %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:message_create' %}" role="button">Создать сообщение</a>
+      </div>
     </div>
-  </div>
+    {% endif %}
 </div>
 {% endblock %}
 {% block content %}
@@ -19,10 +21,12 @@
         <th scope="col">ID сообщения</th>
         <th scope="col">Тема письма</th>
         <th scope="col">Текст сообщения</th>
+        <th scope="col">Действия</th>
       </tr>
     </thead>
     <tbody>
       {% for message in object_list %}
+        {% if user == message.owner %}
           <tr>
             <td>{{ message.id }}</td>
             <td>{{ message.subject }}</td>
@@ -35,6 +39,14 @@
               </div>
             </td>
           </tr>
+        {% endif %}
+        {% if is_manager %}
+          <tr>
+            <td>{{ message.id }}</td>
+            <td>{{ message.subject }}</td>
+            <td>{{ message.body|truncatechars:50 }}</td>
+          </tr>
+        {% endif %}
       {% endfor %}
     </tbody>
   </table>

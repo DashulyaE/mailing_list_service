@@ -116,6 +116,12 @@ class ClientDeleteView(DeleteView, LoginRequiredMixin):
 class MessagelistView(ListView, LoginRequiredMixin):
     model = Message
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Проверяем, входит ли пользователь в группу "Менеджеры"
+        context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
+        return context
+
 
 class MessageDetailView(DetailView, LoginRequiredMixin):
     model = Message
@@ -162,7 +168,8 @@ def send_newmailing(request, pk):
 def all_attempts_list(request):
     """Контроллер для записи всех попыток рассылок в шаблон"""
     attempts = Attempt.objects.select_related("mailing").all()
-    return render(request, "mailingserv/mailing_attempts.html", {"attempts": attempts})
+    is_manager = request.user.groups.filter(name='Менеджеры').exists()
+    return render(request, "mailingserv/mailing_attempts.html", {"attempts": attempts, "is_manager": is_manager,})
 
 
 @login_required
@@ -179,4 +186,5 @@ def user_report(request):
         }
         user_stats.append(stats)
 
-    return render(request, 'mailingserv/user_report.html', {'user_stats': user_stats})
+    is_manager = request.user.groups.filter(name='Менеджеры').exists()
+    return render(request, 'mailingserv/user_report.html', {'user_stats': user_stats, 'is_manager': is_manager,},)
