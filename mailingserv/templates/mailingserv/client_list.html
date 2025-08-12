@@ -2,11 +2,13 @@
 {% block head %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Получатели</h1>
-  <div class="btn-toolbar mb-2 mb-md-0">
-    <div class="btn-group me-2">
-      <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_create' %}" role="button">Создать получателя</a>
+  {% if not is_manager %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_create' %}" role="button">Создать получателя</a>
+      </div>
     </div>
-  </div>
+  {% endif %}
 </div>
 {% endblock %}
 {% block content %}
@@ -36,7 +38,14 @@
               </div>
             </td>
           </tr>
-       {% endif %}
+        {% endif %}
+        {% if is_manager %}
+          <tr>
+            <td>{{ client.email }}</td>
+            <td>{{ client.full_name }}</td>
+            <td>{{ client.comment|truncatechars:50 }}</td>
+          </tr>
+        {% endif %}
       {% endfor %}
     </tbody>
   </table>
