@@ -22,6 +22,12 @@ class MailingForm(StyleFormMixin, ModelForm):
         model = Mailing
         exclude = ['owner']
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user and not user.has_perm('mailingserv.can_finish_mailing'):
+            self.fields['is_subscribed'].disabled = True
+
     def clean(self):
         cleaned_data = super().clean()
         start = cleaned_data.get("start_datetime")

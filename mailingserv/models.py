@@ -58,6 +58,7 @@ class Mailing(models.Model):
         Client, related_name="newsletters", verbose_name="Получатели"
     )
     is_active = models.BooleanField(default=True, verbose_name="Активна")
+    is_subscribed = models.BooleanField(default=True, verbose_name="Включена")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Владелец", null=True)
 
     class Meta:

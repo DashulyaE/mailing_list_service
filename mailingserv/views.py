@@ -41,6 +41,11 @@ class MailingCreateView(CreateView, LoginRequiredMixin):
     form_class = MailingForm
     success_url = reverse_lazy("mailingserv:mailing_list")
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # Передача текущего пользователя
+        return kwargs
+
     def form_valid(self, form):
         mailing = form.save(commit=False)
         mailing.owner = self.request.user
@@ -52,6 +57,11 @@ class MailingUpdateView(UpdateView, LoginRequiredMixin):
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy("mailingserv:mailing_list")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class MailingDeleteView(DeleteView, LoginRequiredMixin):

@@ -29,6 +29,7 @@ class MailingAdmin(admin.ModelAdmin):
         "status",
         "message_subject",
         "clients_count",
+        "is_subscribed",
     )
     search_fields = ("status", "message_subject")
     list_filter = ("status", "start_datetime")
