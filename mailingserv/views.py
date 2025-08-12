@@ -15,7 +15,7 @@ from django.views.generic import (
 from mailingserv import services
 from mailingserv.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm
 from mailingserv.models import Mailing, Client, Message, Attempt
-from mailingserv.services import MailingSender, get_statistics
+from mailingserv.services import MailingSender, get_statistics, get_mailing_cache, get_сlient_cache, get_message_cache
 from users.models import User
 
 
@@ -39,6 +39,13 @@ class MailinglistView(ListView, LoginRequiredMixin):
         context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
         return context
 
+    def get_queryset(self):
+        mailing_qs = get_mailing_cache()
+        user = self.request.user
+        if not user.groups.filter(name='Менеджеры').exists():
+            mailing_qs = mailing_qs.filter(owner=user)
+        return mailing_qs
+
 
 class MailingDetailView(DetailView, LoginRequiredMixin):
     model = Mailing
@@ -49,10 +56,6 @@ class MailingCreateView(CreateView, LoginRequiredMixin):
     form_class = MailingForm
     success_url = reverse_lazy("mailingserv:mailing_list")
 
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['user'] = self.request.user  # Передача текущего пользователя
-    #     return kwargs
 
     def form_valid(self, form):
         mailing = form.save(commit=False)
@@ -83,9 +86,15 @@ class ClientlistView(ListView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Проверяем, входит ли пользователь в группу "Менеджеры"
         context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
         return context
+
+    def get_queryset(self):
+        сlient_qs = get_сlient_cache()
+        user = self.request.user
+        if not user.groups.filter(name='Менеджеры').exists():
+            сlient_qs = сlient_qs.filter(owner=user)
+        return сlient_qs
 
 
 class ClientDetailView(DetailView, LoginRequiredMixin):
@@ -123,6 +132,13 @@ class MessagelistView(ListView, LoginRequiredMixin):
         # Проверяем, входит ли пользователь в группу "Менеджеры"
         context['is_manager'] = self.request.user.groups.filter(name='Менеджеры').exists()
         return context
+
+    def get_queryset(self):
+        message_qs = get_message_cache()
+        user = self.request.user
+        if not user.groups.filter(name='Менеджеры').exists():
+            message_qs = message_qs.filter(owner=user)
+        return message_qs
 
 
 class MessageDetailView(DetailView, LoginRequiredMixin):

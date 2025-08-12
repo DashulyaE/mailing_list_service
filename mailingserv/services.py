@@ -1,8 +1,9 @@
+from django.core.cache import cache
 from django.core.mail import send_mail
-from django.shortcuts import render
 from django.utils import timezone
 
 from config import settings
+from config.settings import CACHE_ENABLED
 from mailingserv.models import Attempt, Client, Mailing, Message
 
 
@@ -79,11 +80,52 @@ def get_successful_attempts_count(user):
         status=Attempt.SUCCESS
     ).count()
 
+
 def get_failed_attempts_count(user):
     return Attempt.objects.filter(
         mailing__owner=user,
         status=Attempt.FAILURE
     ).count()
 
+
 def get_sent_messages_count(user):
     return Message.objects.filter(mailing__owner=user).count()
+
+
+def get_mailing_cache():
+    """Получает данные по рассылкам из кэша, если кэш пуст, получает данные из БД"""
+    if not CACHE_ENABLED:
+        return Mailing.objects.all()
+    key = "mailing_list"
+    mailing = cache.get(key)
+    if mailing is not None:
+        return mailing
+    mailing = Mailing.objects.all()
+    cache.set(key, mailing)
+    return mailing
+
+
+def get_сlient_cache():
+    """Получает данные по получателям из кэша, если кэш пуст, получает данные из БД"""
+    if not CACHE_ENABLED:
+        return Client.objects.all()
+    key = "сlient_list"
+    сlient = cache.get(key)
+    if сlient is not None:
+        return сlient
+    сlient = Client.objects.all()
+    cache.set(key, сlient)
+    return сlient
+
+
+def get_message_cache():
+    """Получает данные по сообщениям из кэша, если кэш пуст, получает данные из БД"""
+    if not CACHE_ENABLED:
+        return Message.objects.all()
+    key = "message_list"
+    message = cache.get(key)
+    if message is not None:
+        return message
+    message = Message.objects.all()
+    cache.set(key, message)
+    return message
