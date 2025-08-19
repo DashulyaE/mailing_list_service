@@ -1,0 +1,61 @@
+{% extends 'mailingserv/base.html' %}
+{% block content %}
+<h2>Рассылка</h2>
+<div class="table-responsive small">
+  <table class="table table-striped table-sm">
+    <tbody>
+      <tr>
+        <td><strong>Номер рассылки</strong></td>
+        <td>{{ object.id }}</td>
+      </tr>
+      <tr>
+        <td><strong>Начало рассылки</strong></td>
+        <td>{{ object.start_datetime }}</td>
+      </tr>
+      <tr>
+        <td><strong>Конец рассылки</strong></td>
+        <td>{{ object.end_datetime }}</td>
+      </tr>
+      <tr>
+        <td><strong>Тема</strong></td>
+        <td>{{ object.message.subject }}</td>
+      </tr>
+      <tr>
+        <td><strong>Сообщение</strong></td>
+        <td>{{ object.message.body }}</td>
+      </tr>
+      <tr>
+        <td><strong>Кол-во получателей</strong></td>
+        <td>{{ object.clients.count }}</td>
+      </tr>
+      <tr>
+        <td><strong>Статус</strong></td>
+        <td>{{ object.get_status_display }}</td>
+      </tr>
+      <tr>
+        <td><strong>Активность</strong></td>
+        <td>{{ object.is_active }}</td>
+      </tr>
+      <tr>
+        <td><strong>Получатели</strong></td>
+        <td>
+          <ul>
+            {% for client in object.clients.all %}
+              <li>{{ client.full_name }} ({{ client.email }})</li>
+            {% empty %}
+              <li>Нет получателей</li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="btn-group me-2">
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:mailing_list' %}" role="button">Назад</a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+{% endblock %}

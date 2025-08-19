@@ -1,0 +1,23 @@
+{% extends 'mailingserv/base.html' %}
+{% block content %}
+<h2>Статистика по рассылкам</h2>
+<div class="table-responsive small">
+  <table class="table table-striped table-sm">
+    <tbody>
+      <tr>
+        <td><strong>Количество всех рассылок</strong></td>
+        <td>{{ total_mailings }}</td>
+      </tr>
+      <tr>
+        <td><strong>Количество активных рассылок</strong></td>
+        <td>{{ active_mailings }}</td>
+      </tr>
+      <tr>
+        <td><strong>Количество уникальных получателей</strong></td>
+        <td>{{ unique_recipients }}</td>
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+{% endblock %}

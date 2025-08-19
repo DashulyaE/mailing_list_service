@@ -1,0 +1,53 @@
+{% extends 'mailingserv/base.html' %}
+{% block head %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Получатели</h1>
+  {% if not is_manager %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_create' %}" role="button">Создать получателя</a>
+      </div>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block content %}
+
+<h2>Список получателей</h2>
+<div class="table-responsive small">
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th scope="col">email</th>
+        <th scope="col">ФИО</th>
+        <th scope="col">Комментарий</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for client in object_list %}
+        {% if user == client.owner %}
+          <tr>
+            <td>{{ client.email }}</td>
+            <td>{{ client.full_name }}</td>
+            <td>{{ client.comment|truncatechars:50 }}</td>
+            <td>
+              <div class="btn-group me-2">
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_detail' client.pk %}" role="button">Подробно</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_update' client.pk %}" role="button">Изменить</a>
+                <a class="btn btn-sm btn-outline-secondary" href="{% url 'mailingserv:client_delete' client.pk %}" role="button">Удалить</a>
+              </div>
+            </td>
+          </tr>
+        {% endif %}
+        {% if is_manager %}
+          <tr>
+            <td>{{ client.email }}</td>
+            <td>{{ client.full_name }}</td>
+            <td>{{ client.comment|truncatechars:50 }}</td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
